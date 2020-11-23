@@ -3,7 +3,7 @@ version: '3.7'
 services:
   mariadb:
     container_name: mariadb_dev
-    image: mariadb:latest
+    image: mariadb:10.5.8
     volumes:
       - ./data:/var/lib/mysql
       - ./config:/etc/mysql/conf.d
