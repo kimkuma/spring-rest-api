@@ -42,6 +42,10 @@ spring:
     activate:
       on-profile: development
 
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: true
+
   jpa:
     hibernate:
       ddl-auto: update
