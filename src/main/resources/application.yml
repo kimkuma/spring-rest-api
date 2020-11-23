@@ -1,4 +1,11 @@
+########################################################################################################################
+# common
+########################################################################################################################
+
 spring:
+  profiles:
+    active: development
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     generate-unique-name: true
@@ -26,3 +33,37 @@ server:
   tomcat:
     accesslog:
       enabled: true
+---
+########################################################################################################################
+# development
+########################################################################################################################
+spring:
+  config:
+    activate:
+      on-profile: development
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  devtools:
+    add-properties: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: DEBUG
+        web.servlet.mvc.method.annotation: TRACE
+
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+
+---
