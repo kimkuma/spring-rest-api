@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  mariadb:
+    container_name: mariadb_dev
+    image: mariadb:latest
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./config:/etc/mysql/conf.d
+    restart: always
+    ports:
+      - "33307:3306"
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: "rest"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
