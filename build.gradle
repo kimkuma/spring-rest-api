@@ -31,6 +31,7 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.0'
 
 	implementation 'org.modelmapper:modelmapper:2.3.9'
+	implementation 'org.hibernate:hibernate-validator:6.1.6.Final'
 
 	developmentOnly 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
 
