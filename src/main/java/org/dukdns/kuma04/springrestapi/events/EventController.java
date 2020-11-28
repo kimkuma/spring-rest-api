@@ -2,14 +2,21 @@ package org.dukdns.kuma04.springrestapi.events;
 
 import org.dukdns.kuma04.springrestapi.common.ErrorsResource;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -17,7 +24,7 @@ import java.net.URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Controller
-//@RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
 public class EventController {
 
     private final EventRepository eventRepository;
@@ -32,8 +39,7 @@ public class EventController {
         this.eventValidator = eventValidator;
     }
 
-    @PostMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity createEvent(@RequestBody  @Valid EventDto eventDto, Errors errors) {
+    public ResponseEntity<?> createEvent(@RequestBody  @Valid EventDto eventDto, Errors errors) {
 
         if(errors.hasErrors()) {
             return badRequest(errors);
@@ -59,7 +65,16 @@ public class EventController {
         return ResponseEntity.created(createdUri).body(eventResource);
     }
 
-    private ResponseEntity badRequest(Errors errors) {
+    @GetMapping
+    public ResponseEntity<?> queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler) {
+        Page<Event> page = this.eventRepository.findAll(pageable);
+
+        var pagedModel = assembler.toModel(page, e -> new EventResource(e));
+        pagedModel.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
+        return ResponseEntity.ok(pagedModel);
+    }
+
+    private ResponseEntity<?> badRequest(Errors errors) {
         return ResponseEntity.badRequest().body(new ErrorsResource(errors));
     }
 }
