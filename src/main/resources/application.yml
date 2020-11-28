@@ -35,19 +35,15 @@ spring:
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
-      initialization-fail-fast: true
       leak-detection-threshold: 60000
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-
-  devtools:
-    add-properties: true
 
 logging:
   level:
