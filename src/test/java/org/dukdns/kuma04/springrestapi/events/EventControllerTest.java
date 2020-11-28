@@ -127,7 +127,7 @@ public class EventControllerTest {
 
     @Test
     @TestDescription("입력 받을 수 없는 값이 사용한 경우에 에러가 발생")
-    public void createEvent_Bad_Requst() throws Exception{
+    public void createEvent_Bad_Request() throws Exception{
         Event event = Event.builder()
                 .id(100)
                 .name("Spring")
@@ -188,10 +188,10 @@ public class EventControllerTest {
                     )
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].objectName").exists())
-                .andExpect(jsonPath("$[0].field").exists())
-                .andExpect(jsonPath("$[0].defaultMessage").exists())
-                .andExpect(jsonPath("$[0].code").exists())
-                .andExpect(jsonPath("$[0].rejectedValue").exists());
+                .andExpect(jsonPath("errors[0].objectName").exists())
+                .andExpect(jsonPath("errors[0].defaultMessage").exists())
+                .andExpect(jsonPath("errors[0].code").exists())
+                .andExpect(jsonPath("_links.index").exists())
+        ;
     }
 }
