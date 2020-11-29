@@ -7,7 +7,8 @@
 * Spring boot 2.4.0
 * Spring REST Docs
 * Spring HATEOAS
-* SPring DATA JPA
+* Spring DATA JPA
+* Spring Security
 * Lombok
 * Docker
 
