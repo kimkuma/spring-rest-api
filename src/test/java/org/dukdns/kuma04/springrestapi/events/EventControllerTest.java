@@ -1,23 +1,12 @@
 package org.dukdns.kuma04.springrestapi.events;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dukdns.kuma04.springrestapi.common.BaseControllerTest;
-import org.dukdns.kuma04.springrestapi.common.RestDocsConfiguration;
 import org.dukdns.kuma04.springrestapi.common.TestDescription;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
@@ -64,7 +53,6 @@ public class EventControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("free").value(false))
                 .andExpect(jsonPath("offline").value(true))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
-
                 .andDo(document("create-event",
                         links(
                                 linkWithRel("self").description("link to self"),
@@ -84,7 +72,7 @@ public class EventControllerTest extends BaseControllerTest {
                                 fieldWithPath("beginEventDateTime").description("date time of begin of new event"),
                                 fieldWithPath("endEventDateTime").description("date time of end of new event"),
                                 fieldWithPath("location").description("location of new event"),
-                                fieldWithPath("basePrice").description("base price of new eventt"),
+                                fieldWithPath("basePrice").description("base price of new event"),
                                 fieldWithPath("maxPrice").description("max price of new event"),
                                 fieldWithPath("limitOfEnrollment").description("limit of enrollment")
 
