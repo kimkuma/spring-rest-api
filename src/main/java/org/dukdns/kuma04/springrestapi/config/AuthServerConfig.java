@@ -1,6 +1,7 @@
 package org.dukdns.kuma04.springrestapi.config;
 
 import org.dukdns.kuma04.springrestapi.accounts.AccountService;
+import org.dukdns.kuma04.springrestapi.common.AppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,12 +25,15 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private final TokenStore tokenStore;
 
+    private final AppProperties appProperties;
+
     @Autowired
-    public AuthServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, AccountService accountService, TokenStore tokenStore) {
+    public AuthServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, AccountService accountService,AppProperties appProperties, TokenStore tokenStore) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
         this.tokenStore = tokenStore;
+        this.appProperties = appProperties;
     }
 
     @Override
@@ -40,10 +44,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("myApp")
+                .withClient(appProperties.getClientId())
                 .authorizedGrantTypes("password","refresh_token")
                 .scopes("read","write")
-                .secret(this.passwordEncoder.encode("pass"))
+                .secret(this.passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
     }

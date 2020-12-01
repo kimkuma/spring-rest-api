@@ -4,8 +4,10 @@ import org.dukdns.kuma04.springrestapi.accounts.Account;
 import org.dukdns.kuma04.springrestapi.accounts.AccountRepository;
 import org.dukdns.kuma04.springrestapi.accounts.AccountRole;
 import org.dukdns.kuma04.springrestapi.accounts.AccountService;
+import org.dukdns.kuma04.springrestapi.common.AppProperties;
 import org.dukdns.kuma04.springrestapi.common.BaseControllerTest;
 import org.dukdns.kuma04.springrestapi.common.TestDescription;
+import org.dukdns.kuma04.springrestapi.config.AppConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class EventControllerTest extends BaseControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AppProperties appProperties;
 
     @Before
     public void setUp() {
@@ -136,23 +141,17 @@ public class EventControllerTest extends BaseControllerTest {
 
     private String getAccessToken() throws Exception {
         //Given
-        String username = "kuma@email.com";
-        String password = "kuma";
-
         Account kuma = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                .email(appProperties.getUserUsername())
+                .password(appProperties.getUserPassword())
+                .roles(Set.of(AccountRole.USER))
                 .build();
         this.accountService.saveAccount(kuma);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
-
         ResultActions perform = this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
-                .param("username", username)
-                .param("password", password)
+                .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                .param("username", appProperties.getUserUsername())
+                .param("password", appProperties.getUserPassword())
                 .param("grant_type", "password"));
         MockHttpServletResponse response = perform.andReturn().getResponse();
         String responseBody = response.getContentAsString();

@@ -3,6 +3,7 @@ package org.dukdns.kuma04.springrestapi.config;
 import org.dukdns.kuma04.springrestapi.accounts.Account;
 import org.dukdns.kuma04.springrestapi.accounts.AccountRole;
 import org.dukdns.kuma04.springrestapi.accounts.AccountService;
+import org.dukdns.kuma04.springrestapi.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -38,15 +39,27 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
+
                 Account kuma = Account.builder()
-                        .email("kimkuma04@email.com")
-                        .password("kuma")
-                        .roles(Set.of(AccountRole.ADMIN,AccountRole.USER))
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(Set.of(AccountRole.USER))
                         .build();
 
                 accountService.saveAccount(kuma);
+
+                Account admin = Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
+                        .roles(Set.of(AccountRole.ADMIN,AccountRole.USER))
+                        .build();
+
+                accountService.saveAccount(admin);
             }
         };
     }

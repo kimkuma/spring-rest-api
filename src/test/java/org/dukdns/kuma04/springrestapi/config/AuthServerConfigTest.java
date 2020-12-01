@@ -3,6 +3,7 @@ package org.dukdns.kuma04.springrestapi.config;
 import org.dukdns.kuma04.springrestapi.accounts.Account;
 import org.dukdns.kuma04.springrestapi.accounts.AccountRole;
 import org.dukdns.kuma04.springrestapi.accounts.AccountService;
+import org.dukdns.kuma04.springrestapi.common.AppProperties;
 import org.dukdns.kuma04.springrestapi.common.BaseControllerTest;
 import org.dukdns.kuma04.springrestapi.common.TestDescription;
 import org.junit.Test;
@@ -21,27 +22,25 @@ public class AuthServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Test
     @TestDescription("인증 토큰을 발급받는 테스트")
     public void getAuthToken() throws Exception {
         //Given
-        String username = "kuma@email.com";
-        String password = "kuma";
-
-        Account kuma = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                .build();
-        this.accountService.saveAccount(kuma);
-
-        String clientId = "myApp";
-        String clientSecret = "pass";
+//
+//        Account kuma = Account.builder()
+//                .email(appProperties.getUserUsername())
+//                .password(appProperties.getUserPassword())
+//                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+//                .build();
+//        this.accountService.saveAccount(kuma);
 
         this.mockMvc.perform(post("/oauth/token")
-                    .with(httpBasic(clientId, clientSecret))
-                    .param("username",username)
-                    .param("password",password)
+                    .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                    .param("username",appProperties.getUserUsername())
+                    .param("password",appProperties.getUserPassword())
                     .param("grant_type","password"))
                 .andDo(print())
                 .andExpect(status().isOk())
