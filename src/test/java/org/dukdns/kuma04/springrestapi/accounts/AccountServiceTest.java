@@ -44,10 +44,10 @@ public class AccountServiceTest {
         Account account = Account.builder()
                 .email(username)
                 .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                .roles(Set.of(AccountRole.USER))
                 .build();
 
-        this.accountService.saveAccount(account);
+        //this.accountService.saveAccount(account);
 
         // When
         UserDetailsService userDetailsService =  accountService;
