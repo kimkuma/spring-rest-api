@@ -59,4 +59,12 @@ server:
     accesslog:
       enabled: true
 
+my-app:
+  admin-username: admin@email.com
+  admin-password: admin
+  user-username: kimkuma04@email.com
+  user-password: kuma
+  client-id: myApp
+  client-secret: pass
+
 ---
