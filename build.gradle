@@ -66,8 +66,8 @@ asciidoctor {
 }
 
 bootJar {
-	dependsOn asciidoctor                      // (9)
-	from ("${asciidoctor.outputDir}/html5") {  // (10)
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
 		into 'static/docs'
 	}
 }

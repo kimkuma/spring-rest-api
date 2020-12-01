@@ -1,7 +1,7 @@
 package org.dukdns.kuma04.springrestapi.index;
 
 import org.dukdns.kuma04.springrestapi.common.BaseControllerTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
