@@ -74,7 +74,7 @@ public class EventController {
                                          @CurrentUser Account account) {
 
         Page<Event> page = this.eventRepository.findAll(pageable);
-        var pagedModel = assembler.toModel(page, e -> new EventResource(e));
+        var pagedModel = assembler.toModel(page, EventResource::new);
         pagedModel.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
 
         if(account != null) {
